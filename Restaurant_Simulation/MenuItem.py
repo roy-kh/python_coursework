@@ -1,7 +1,3 @@
-# Roy Hayyat, Hayyat@usc.edu
-# ITP 115, Spring 2021
-# Final Project
-
 class MenuItem:  # Start by defining the MenuItem class in a file titled MenuItem.py.
 # This class will represent a single item that a diner can order from the restaurant’s menu.
 
