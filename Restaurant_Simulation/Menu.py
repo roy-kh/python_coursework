@@ -1,6 +1,3 @@
-# Roy Hayyat, Hayyat@usc.edu
-# ITP 115, Spring 2021
-# Final Project
 
 from MenuItem import MenuItem  # import statement
 
