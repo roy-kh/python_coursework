@@ -1,1 +1,1 @@
-sample
+This is a very basic program written to simulate a restaurant using object-oriented programming. There are objects representing a waiter, diners, a menu, and menu items. The restaurant simulation begins by running the Run.py file and entering integer inputs when prompted.
