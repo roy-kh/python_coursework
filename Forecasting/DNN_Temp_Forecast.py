@@ -1,8 +1,4 @@
-# Roy Hayyat
-# ITP 359 2023
-# Homework 2
-
-"""Compare a feed forward neural network and a hidden markov model to forecast a time series"""
+"""Comparing a feed forward neural network and a hidden markov model to forecast a time series"""
 
 from tensorflow import keras
 from keras.models import Sequential
@@ -14,33 +10,32 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from dateutil.relativedelta import relativedelta
 
-'''1. Download global temperature anomaly from 1850 to the present. Temperatures should be monthly.
-   2. Read the data file'''
+'''Downloading global monthly temperature anomaly from 1850 to the present and reading the data file'''
 myDF = pd.read_csv("/content/temperature.csv")
 print(myDF)
 
-'''3. Convert the Year column into datetime (from pandas)'''
+'''Converting the Year column into datetime (from pandas)'''
 myDF['Year'] = pd.to_datetime(myDF['Year'])
 print(myDF)
 
-'''4. Plot the temperature anomaly vs year'''
+'''Plotting the temperature anomaly vs year to get an idea of the data'''
 plt.figure()
 plt.plot(myDF['Year'], myDF['Anomaly'])
 plt.xlabel('Year')
 plt.ylabel('Temp Anomaly')
 plt.show()
 
-'''5. Save only the temperature anomaly into a 2D numpy array'''
-anomaly_array = myDF['Anomaly'].values.reshape(-1, 1)
+'''Data Preprocessing '''
+anomaly_array = myDF['Anomaly'].values.reshape(-1, 1)  # Save only the temperature anomaly into a 2D numpy array
 print(anomaly_array)
 
-'''6. Scale the temperature using minmaxscaler'''
-scaler = MinMaxScaler()
+
+scaler = MinMaxScaler()  # Scale the temperature using minmaxscaler
 temp_scaled = scaler.fit_transform(anomaly_array)
 print(temp_scaled)
 
-'''7. Convert temp array into sequences of n monthly temps that are shifted by one month in each row of the array. 
-# Call this array X. y is the next month’s temp (1D array). The length of the sequence n is your choice (e.g. 24).'''
+'''Converting the temp array into sequences of n monthly temps that are shifted by one month in each row of the array. 
+Will call this array X. y is the next month’s temp (1D array). The length of the sequence n is your choice (e.g. 24).'''
 def to_sequences(temp_scaled, seq_size):
     x = []
     y = []
@@ -58,7 +53,7 @@ print(X)
 print('Shape of y: ', y.shape)
 print(y)
 
-'''8. Build a dense feedforward neural network with sequences of temperature as input and y as the output.'''
+'''Building a dense feedforward neural network with sequences of temperature as input and y as the output.'''
 model = Sequential()
 model.add(Input(shape=(seq_size,)))  # only need to define the input shape
 model.add(Dense(128, activation='relu'))
@@ -67,21 +62,21 @@ model.add(Dense(1))
 model.compile(loss='mean_squared_error', optimizer='adam')
 print(model.summary())
 
-'''9. Use mean squared error as the loss function'''
+'''Using mean squared error as the loss function'''
 model.compile(loss='mean_squared_error', optimizer='adam')
 
-'''10. Train the network'''
+'''Training the network'''
 model_fit = model.fit(X, y, verbose=1, epochs=20)
 
-'''11. Predict the next months temperature for all sequences in X. Inverse scale the temperature.'''
+'''Predicting the next months temperature for all sequences in X. Inverse scale the temperature.'''
 y_pred_nn = model.predict(X)
 y_pred_nn = scaler.inverse_transform(y_pred_nn)
 
-'''12. Score the model'''
+'''Scoring the model'''
 score_nn = mean_squared_error(scaler.inverse_transform(y.reshape(-1, 1)), y_pred_nn[:, 0])
 print('Neural Network MSE:', score_nn)
 
-'''13. Now, plot the predicted temperatures and the actual temperatures'''
+'''Plotting the predicted temperatures and the actual temperatures'''
 plt.figure()
 plt.plot(myDF['Year'], scaler.inverse_transform(temp_scaled))
 plt.plot(myDF['Year'][-len(y_pred_nn):], y_pred_nn)  # predicted
@@ -89,8 +84,7 @@ plt.title('Neural Network Predictions')
 plt.xlabel('Year')
 plt.ylabel('Temperature Anomaly')
 
-'''14. Now predict the temperature for the next 24 months into the future. 
-   For every month in the future, you will predict the temperature. 
+'''Finally, predicting the temperature for the next 24 months into the future. 
    Each month's predicted temperature should be stored back into the sequence for predicting the following month. 
    So, each y value becomes part of X.'''
 print(X.shape)
