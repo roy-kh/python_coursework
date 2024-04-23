@@ -1,4 +1,4 @@
-# python Coursework Showcase
+# Python Coursework Showcase
 
 Here are a few Python projects that I have completed with minimal supervision during my time as an undergraduate at USC, where I actively engaged in comprehensive AI/ML classes!
 
