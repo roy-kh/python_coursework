@@ -1,4 +1,4 @@
-## Global Temperature Anomaly Analysis
+### Global Temperature Anomaly Analysis 🌍📈
 
 This project explores global temperature anomalies using the NOAA Global Surface Temperature Dataset. The goal is to analyze historical trends and patterns, forecast future anomalies, and compare methods for time series analysis.
 
